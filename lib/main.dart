@@ -1,6 +1,6 @@
 import 'package:data_migrator/ui/common/alpine/alpine_colors.dart';
-import 'package:data_migrator/ui/lines.dart';
 import 'package:data_migrator/ui/common/values/routes.dart';
+import 'package:data_migrator/ui/lines.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vrouter/vrouter.dart';
@@ -27,8 +27,10 @@ class _MyAppState extends State<MyApp> {
     return ProviderScope(
       child: VRouter(
         themeMode: ThemeMode.dark,
-        darkTheme: ThemeData.dark().copyWith(scaffoldBackgroundColor: AlpineColors.background1a),
-        theme: ThemeData.light().copyWith(scaffoldBackgroundColor: AlpineColors.background1a),
+        darkTheme: ThemeData.dark()
+            .copyWith(scaffoldBackgroundColor: AlpineColors.background1a),
+        theme: ThemeData.light()
+            .copyWith(scaffoldBackgroundColor: AlpineColors.background1a),
         mode: VRouterMode.history,
         navigatorKey: navigatorKey,
         //navigatorKey: GlobalKey(debugLabel: "VRouter:app"),
@@ -61,10 +63,11 @@ class _MyAppState extends State<MyApp> {
 }
 
 class DebugWidget extends StatelessWidget {
-  DebugWidget([
+  const DebugWidget([
     this.text,
     this.routeName,
-  ]);
+    Key? key,
+  ]) : super(key: key);
 
   final Widget? text;
   final String? routeName;
@@ -80,7 +83,8 @@ class DebugWidget extends StatelessWidget {
         text ?? const Text("default text"),
         if (routeName != null)
           TextButton(
-            onPressed: () => context.vRouter.to(routeName!, isReplacement: false),
+            onPressed: () =>
+                context.vRouter.to(routeName!, isReplacement: false),
             child: Text("routeButton: $routeName"),
           ),
       ],

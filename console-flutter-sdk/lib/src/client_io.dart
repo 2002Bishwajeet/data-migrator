@@ -1,19 +1,21 @@
 import 'dart:io';
+
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter_web_auth/flutter_web_auth.dart';
-import 'client_mixin.dart';
+
 import 'client_base.dart';
+import 'client_mixin.dart';
 import 'cookie_manager.dart';
 import 'enums.dart';
 import 'exception.dart';
 import 'interceptor.dart';
 import 'response.dart';
-import 'package:flutter/foundation.dart';
 
 ClientBase createClient({
   required String endPoint,
@@ -47,18 +49,22 @@ class ClientIO extends ClientBase with ClientMixin {
     this.selfSigned = false,
   }) : _endPoint = endPoint {
     _nativeClient = HttpClient()
-      ..badCertificateCallback = ((X509Certificate cert, String host, int port) => selfSigned);
+      ..badCertificateCallback =
+          ((X509Certificate cert, String host, int port) => selfSigned);
     _httpClient = IOClient(_nativeClient);
-    _endPointRealtime = endPoint.replaceFirst('https://', 'wss://').replaceFirst('http://', 'ws://');
-    this._headers = {
+    _endPointRealtime = endPoint
+        .replaceFirst('https://', 'wss://')
+        .replaceFirst('http://', 'ws://');
+    _headers = {
       'content-type': 'application/json',
       'x-sdk-version': 'appwrite:flutter:4.0.4',
       'X-Appwrite-Response-Format': '0.12.0',
     };
 
-    this.config = {};
+    config = {};
 
-    assert(_endPoint.startsWith(RegExp("http://|https://")), "endPoint $_endPoint must start with 'http'");
+    assert(_endPoint.startsWith(RegExp("http://|https://")),
+        "endPoint $_endPoint must start with 'http'");
     init();
   }
 
@@ -113,15 +119,18 @@ class ClientIO extends ClientBase with ClientMixin {
 
   @override
   ClientIO setSelfSigned({bool status = true}) {
-    this.selfSigned = status;
-    _nativeClient.badCertificateCallback = ((X509Certificate cert, String host, int port) => status);
+    selfSigned = status;
+    _nativeClient.badCertificateCallback =
+        ((X509Certificate cert, String host, int port) => status);
     return this;
   }
 
   @override
   ClientIO setEndpoint(String endPoint) {
-    this._endPoint = endPoint;
-    _endPointRealtime = endPoint.replaceFirst('https://', 'wss://').replaceFirst('http://', 'ws://');
+    _endPoint = endPoint;
+    _endPointRealtime = endPoint
+        .replaceFirst('https://', 'wss://')
+        .replaceFirst('http://', 'ws://');
     return this;
   }
 
@@ -142,7 +151,7 @@ class ClientIO extends ClientBase with ClientMixin {
     // if web skip cookie implementation and origin header as those are automatically handled by browsers
     final Directory cookieDir = await _getCookiePath();
     _cookieJar = PersistCookieJar(storage: FileStorage(cookieDir.path));
-    this._interceptors.add(CookieManager(_cookieJar));
+    _interceptors.add(CookieManager(_cookieJar));
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     addHeader('Origin', 'appwrite-${Platform.operatingSystem}://localhost'
         // 'appwrite-${Platform.operatingSystem}://${packageInfo.packageName}'
@@ -154,7 +163,8 @@ class ClientIO extends ClientBase with ClientMixin {
     try {
       if (Platform.isAndroid) {
         final andinfo = await deviceInfoPlugin.androidInfo;
-        device = '(Linux; U; Android ${andinfo.version.release}; ${andinfo.brand} ${andinfo.model})';
+        device =
+            '(Linux; U; Android ${andinfo.version.release}; ${andinfo.brand} ${andinfo.model})';
       }
       if (Platform.isIOS) {
         final iosinfo = await deviceInfoPlugin.iosInfo;
@@ -166,7 +176,8 @@ class ClientIO extends ClientBase with ClientMixin {
       }
       if (Platform.isWindows) {
         final wininfo = await deviceInfoPlugin.windowsInfo;
-        device = '(Windows NT; ${wininfo.computerName})'; //can't seem to get much info here
+        device =
+            '(Windows NT; ${wininfo.computerName})'; //can't seem to get much info here
       }
       if (Platform.isMacOS) {
         final macinfo = await deviceInfoPlugin.macOsInfo;
@@ -176,7 +187,8 @@ class ClientIO extends ClientBase with ClientMixin {
       debugPrint('Error getting device info: $e');
       device = Platform.operatingSystem;
     }
-    addHeader('user-agent', '${packageInfo.packageName}/${packageInfo.version} $device');
+    addHeader('user-agent',
+        '${packageInfo.packageName}/${packageInfo.version} $device');
 
     _initialized = true;
   }
@@ -224,7 +236,8 @@ class ClientIO extends ClientBase with ClientMixin {
       final key = url.queryParameters['key'];
       final secret = url.queryParameters['secret'];
       if (key == null || secret == null) {
-        throw AppwriteException("Invalid OAuth2 Response. Key and Secret not available.", 500);
+        throw AppwriteException(
+            "Invalid OAuth2 Response. Key and Secret not available.", 500);
       }
       Cookie cookie = Cookie(key, secret);
       cookie.domain = Uri.parse(_endPoint).host;
@@ -245,15 +258,15 @@ class ClientIO extends ClientBase with ClientMixin {
     ResponseType? responseType,
   }) async {
     if (!_initialized) {
-      await this.init();
+      await init();
     }
 
     late http.Response res;
 
-    http.BaseRequest request = this.prepareRequest(
+    http.BaseRequest request = prepareRequest(
       method,
       uri: Uri.parse(_endPoint + path),
-      headers: {...this._headers!, ...headers},
+      headers: {..._headers!, ...headers},
       params: params,
     );
 
@@ -263,7 +276,7 @@ class ClientIO extends ClientBase with ClientMixin {
       res = await toResponse(streamedResponse);
       res = await _interceptResponse(res);
 
-      return this.prepareResponse(
+      return prepareResponse(
         res,
         responseType: responseType,
       );

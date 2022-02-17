@@ -1,13 +1,15 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:html' as html;
-import 'dart:async';
+
 import 'package:web_socket_channel/html.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-import 'realtime_subscription.dart';
-import 'realtime_base.dart';
+
 import 'client.dart';
 import 'client_browser.dart';
+import 'realtime_base.dart';
 import 'realtime_mixin.dart';
+import 'realtime_subscription.dart';
 
 RealtimeBase createRealtime(Client client) => RealtimeBrowser(client);
 
@@ -16,8 +18,8 @@ class RealtimeBrowser extends RealtimeBase with RealtimeMixin {
 
   RealtimeBrowser(Client client) {
     this.client = client;
-    this.getWebSocket = _getWebSocket;
-    this.getFallbackCookie = _getFallbackCookie;
+    getWebSocket = _getWebSocket;
+    getFallbackCookie = _getFallbackCookie;
   }
 
   Future<WebSocketChannel> _getWebSocket(Uri uri) async {

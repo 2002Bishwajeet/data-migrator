@@ -9,7 +9,7 @@ class Users extends Service {
      /// filter your results.
      ///
      Future<models.UserList> list({String? search, int? limit, int? offset, String? cursor, String? cursorDirection, String? orderType}) async {
-        final String path = '/users';
+        const String path = '/users';
 
         final Map<String, dynamic> params = {
             'search': search,
@@ -33,7 +33,7 @@ class Users extends Service {
      /// Create a new user.
      ///
      Future<models.User> create({required String userId, required String email, required String password, String? name}) async {
-        final String path = '/users';
+        const String path = '/users';
 
         final Map<String, dynamic> params = {
             'userId': userId,
@@ -52,7 +52,7 @@ class Users extends Service {
 
      /// Get usage stats for the users API
      Future<models.UsageUsers> getUsage({String? range, String? provider}) async {
-        final String path = '/users/usage';
+        const String path = '/users/usage';
 
         final Map<String, dynamic> params = {
             'range': range,

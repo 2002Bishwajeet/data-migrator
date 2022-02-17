@@ -10,7 +10,7 @@ class Functions extends Service {
   ///
   Future<models.FunctionList> list(
       {String? search, int? limit, int? offset, String? cursor, String? cursorDirection, String? orderType}) async {
-    final String path = '/functions';
+    const String path = '/functions';
 
     final Map<String, dynamic> params = {
       'search': search,
@@ -44,7 +44,7 @@ class Functions extends Service {
       List? events,
       String? schedule,
       int? timeout}) async {
-    final String path = '/functions';
+    const String path = '/functions';
 
     final Map<String, dynamic> params = {
       'functionId': functionId,
@@ -70,7 +70,7 @@ class Functions extends Service {
   /// Get a list of all runtimes that are currently active in your project.
   ///
   Future<models.RuntimeList> listRuntimes() async {
-    final String path = '/functions/runtimes';
+    const String path = '/functions/runtimes';
 
     final Map<String, dynamic> params = {};
 

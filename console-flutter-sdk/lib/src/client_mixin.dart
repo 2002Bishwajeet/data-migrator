@@ -1,8 +1,10 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
+
+import 'enums.dart';
 import 'exception.dart';
 import 'response.dart';
-import 'dart:convert';
-import 'enums.dart';
 
 class ClientMixin {
   http.BaseRequest prepareRequest(
@@ -40,7 +42,7 @@ class ClientMixin {
     } else if (method == HttpMethod.get) {
       final encoded = <String, dynamic>{};
       if (params.isNotEmpty) {
-        params.keys.forEach((key) {
+        for (var key in params.keys) {
           if (params[key] is int || params[key] is double) {
             encoded[key] = params[key].toString();
           } else if (params[key] is List) {
@@ -48,7 +50,7 @@ class ClientMixin {
           } else {
             encoded[key] = params[key];
           }
-        });
+        }
       }
       uri = Uri(
           fragment: uri.fragment,
@@ -99,18 +101,23 @@ class ClientMixin {
     return Response(data: data);
   }
 
-  Future<http.Response> toResponse(http.StreamedResponse streamedResponse) async {
-    if(streamedResponse.statusCode == 204) {
-        return http.Response('',
-          streamedResponse.statusCode,
-          headers: streamedResponse.headers.map((k,v) => k.toLowerCase()=='content-type' ? MapEntry(k, 'text/plain') : MapEntry(k,v)),
-          request: streamedResponse.request,
-          isRedirect: streamedResponse.isRedirect,
-          persistentConnection: streamedResponse.persistentConnection,
-          reasonPhrase: streamedResponse.reasonPhrase,
-        );
-      } else {
-        return await http.Response.fromStream(streamedResponse);
-      }
+  Future<http.Response> toResponse(
+      http.StreamedResponse streamedResponse) async {
+    if (streamedResponse.statusCode == 204) {
+      return http.Response(
+        '',
+        streamedResponse.statusCode,
+        headers: streamedResponse.headers.map((k, v) =>
+            k.toLowerCase() == 'content-type'
+                ? MapEntry(k, 'text/plain')
+                : MapEntry(k, v)),
+        request: streamedResponse.request,
+        isRedirect: streamedResponse.isRedirect,
+        persistentConnection: streamedResponse.persistentConnection,
+        reasonPhrase: streamedResponse.reasonPhrase,
+      );
+    } else {
+      return await http.Response.fromStream(streamedResponse);
+    }
   }
 }

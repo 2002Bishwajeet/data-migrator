@@ -1,13 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:web_socket_channel/web_socket_channel.dart';
+
+import 'package:flutter/cupertino.dart';
 import 'package:web_socket_channel/status.dart';
-import 'exception.dart';
-import 'realtime_subscription.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
+
 import 'client.dart';
+import 'exception.dart';
 import 'realtime_message.dart';
 import 'realtime_response.dart';
 import 'realtime_response_connected.dart';
+import 'realtime_subscription.dart';
 
 typedef WebSocketFactory = Future<WebSocketChannel> Function(Uri uri);
 typedef GetFallbackCookie = String? Function();
@@ -38,7 +41,7 @@ mixin RealtimeMixin {
       _lastUrl = uri.toString();
       _websok = await getWebSocket(uri);
     }
-    print('subscription: $_lastUrl');
+    debugPrint('subscription: $_lastUrl');
 
     try {
       _websok?.stream.listen((response) {
@@ -65,13 +68,13 @@ mixin RealtimeMixin {
             break;
           case 'event':
             final message = RealtimeMessage.fromMap(data.data);
-            message.channels.forEach((channel) {
-              if (this._channels[channel] != null) {
-                this._channels[channel]!.forEach((stream) {
+            for (var channel in message.channels) {
+              if (_channels[channel] != null) {
+                for (var stream in _channels[channel]!) {
                   stream.sink.add(message);
-                });
+                }
               }
-            });
+            }
             break;
         }
       });
@@ -106,24 +109,24 @@ mixin RealtimeMixin {
 
   RealtimeSubscription subscribeTo(List<String> channels) {
     StreamController<RealtimeMessage> controller = StreamController.broadcast();
-    channels.forEach((channel) {
-      if (!this._channels.containsKey(channel)) {
-        this._channels[channel] = [];
+    for (var channel in channels) {
+      if (!_channels.containsKey(channel)) {
+        _channels[channel] = [];
       }
-      this._channels[channel]!.add(controller);
-    });
+      _channels[channel]!.add(controller);
+    }
     Future.delayed(Duration.zero, () => _createSocket());
     RealtimeSubscription subscription = RealtimeSubscription(
         stream: controller.stream,
         close: () async {
           controller.close();
-          channels.forEach((channel) {
-            this._channels[channel]!.remove(controller);
-            if (this._channels[channel]!.isEmpty) {
-              this._channels.remove(channel);
+          for (var channel in channels) {
+            _channels[channel]!.remove(controller);
+            if (_channels[channel]!.isEmpty) {
+              _channels.remove(channel);
             }
-          });
-          if(this._channels.isNotEmpty) {
+          }
+          if (_channels.isNotEmpty) {
             await Future.delayed(Duration.zero, () => _createSocket());
           } else {
             await _closeConnection();
@@ -136,7 +139,7 @@ mixin RealtimeMixin {
     if (response.data['code'] == 1008) {
       throw AppwriteException(response.data["message"], response.data["code"]);
     } else {
-      print("Reconnecting in one second.");
+      debugPrint("Reconnecting in one second.");
       Future.delayed(const Duration(seconds: 1), () {
         _createSocket();
       });

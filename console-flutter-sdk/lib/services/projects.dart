@@ -5,7 +5,7 @@ class Projects extends Service {
 
      /// List Projects
      Future<models.ProjectList> list({String? search, int? limit, int? offset, String? cursor, String? cursorDirection, String? orderType}) async {
-        final String path = '/projects';
+        const String path = '/projects';
 
         final Map<String, dynamic> params = {
             'search': search,
@@ -26,7 +26,7 @@ class Projects extends Service {
 
      /// Create Project
      Future<models.Project> create({required String projectId, required String name, required String teamId, String? description, String? logo, String? url, String? legalName, String? legalCountry, String? legalState, String? legalCity, String? legalAddress, String? legalTaxId}) async {
-        final String path = '/projects';
+        const String path = '/projects';
 
         final Map<String, dynamic> params = {
             'projectId': projectId,

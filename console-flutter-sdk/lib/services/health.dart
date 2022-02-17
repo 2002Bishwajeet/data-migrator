@@ -8,7 +8,7 @@ class Health extends Service {
      /// Check the Appwrite HTTP server is up and responsive.
      ///
      Future<models.HealthStatus> get() async {
-        final String path = '/health';
+        const String path = '/health';
 
         final Map<String, dynamic> params = {
         };
@@ -26,7 +26,7 @@ class Health extends Service {
      /// Check the Appwrite Antivirus server is up and connection is successful.
      ///
      Future<models.HealthAntivirus> getAntivirus() async {
-        final String path = '/health/anti-virus';
+        const String path = '/health/anti-virus';
 
         final Map<String, dynamic> params = {
         };
@@ -45,7 +45,7 @@ class Health extends Service {
      /// successful.
      ///
      Future<models.HealthStatus> getCache() async {
-        final String path = '/health/cache';
+        const String path = '/health/cache';
 
         final Map<String, dynamic> params = {
         };
@@ -63,7 +63,7 @@ class Health extends Service {
      /// Check the Appwrite database server is up and connection is successful.
      ///
      Future<models.HealthStatus> getDB() async {
-        final String path = '/health/db';
+        const String path = '/health/db';
 
         final Map<String, dynamic> params = {
         };
@@ -83,7 +83,7 @@ class Health extends Service {
      /// server.
      ///
      Future<models.HealthQueue> getQueueCertificates() async {
-        final String path = '/health/queue/certificates';
+        const String path = '/health/queue/certificates';
 
         final Map<String, dynamic> params = {
         };
@@ -98,7 +98,7 @@ class Health extends Service {
 
      /// Get Functions Queue
      Future<models.HealthQueue> getQueueFunctions() async {
-        final String path = '/health/queue/functions';
+        const String path = '/health/queue/functions';
 
         final Map<String, dynamic> params = {
         };
@@ -117,7 +117,7 @@ class Health extends Service {
      /// internal queue server.
      ///
      Future<models.HealthQueue> getQueueLogs() async {
-        final String path = '/health/queue/logs';
+        const String path = '/health/queue/logs';
 
         final Map<String, dynamic> params = {
         };
@@ -136,7 +136,7 @@ class Health extends Service {
      /// Appwrite internal queue server.
      ///
      Future<models.HealthQueue> getQueueUsage() async {
-        final String path = '/health/queue/usage';
+        const String path = '/health/queue/usage';
 
         final Map<String, dynamic> params = {
         };
@@ -155,7 +155,7 @@ class Health extends Service {
      /// internal queue server.
      ///
      Future<models.HealthQueue> getQueueWebhooks() async {
-        final String path = '/health/queue/webhooks';
+        const String path = '/health/queue/webhooks';
 
         final Map<String, dynamic> params = {
         };
@@ -173,7 +173,7 @@ class Health extends Service {
      /// Check the Appwrite local storage device is up and connection is successful.
      ///
      Future<models.HealthStatus> getStorageLocal() async {
-        final String path = '/health/storage/local';
+        const String path = '/health/storage/local';
 
         final Map<String, dynamic> params = {
         };
@@ -197,7 +197,7 @@ class Health extends Service {
      /// uses NTP.
      ///
      Future<models.HealthTime> getTime() async {
-        final String path = '/health/time';
+        const String path = '/health/time';
 
         final Map<String, dynamic> params = {
         };

@@ -10,7 +10,7 @@ class Storage extends Service {
      /// project's files. [Learn more about different API modes](/docs/admin).
      ///
      Future<models.FileList> listFiles({String? search, int? limit, int? offset, String? cursor, String? cursorDirection, String? orderType}) async {
-        final String path = '/storage/files';
+        const String path = '/storage/files';
 
         final Map<String, dynamic> params = {
             'search': search,
@@ -36,7 +36,7 @@ class Storage extends Service {
      /// read and write arguments.
      ///
      Future<models.File> createFile({required String fileId, required http.MultipartFile file, List? read, List? write}) async {
-        final String path = '/storage/files';
+        const String path = '/storage/files';
 
         final Map<String, dynamic> params = {
             'fileId': fileId,
@@ -125,9 +125,9 @@ class Storage extends Service {
             'project': client.config['project'],
         };
 
-        params.keys.forEach((key) {if (params[key] is int || params[key] is double) {
+        for (var key in params.keys) {if (params[key] is int || params[key] is double) {
           params[key] = params[key].toString();
-        }});
+        }}
 
         final res = await client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
         return res.data;
@@ -158,9 +158,9 @@ class Storage extends Service {
             'project': client.config['project'],
         };
 
-        params.keys.forEach((key) {if (params[key] is int || params[key] is double) {
+        for (var key in params.keys) {if (params[key] is int || params[key] is double) {
           params[key] = params[key].toString();
-        }});
+        }}
 
         final res = await client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
         return res.data;
@@ -179,9 +179,9 @@ class Storage extends Service {
             'project': client.config['project'],
         };
 
-        params.keys.forEach((key) {if (params[key] is int || params[key] is double) {
+        for (var key in params.keys) {if (params[key] is int || params[key] is double) {
           params[key] = params[key].toString();
-        }});
+        }}
 
         final res = await client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
         return res.data;
@@ -189,7 +189,7 @@ class Storage extends Service {
 
      /// Get usage stats for storage
      Future<models.UsageStorage> getUsage({String? range}) async {
-        final String path = '/storage/usage';
+        const String path = '/storage/usage';
 
         final Map<String, dynamic> params = {
             'range': range,

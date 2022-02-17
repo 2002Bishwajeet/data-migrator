@@ -12,7 +12,7 @@ class Teams extends Service {
      /// project. [Learn more about different API modes](/docs/admin).
      ///
      Future<models.TeamList> list({String? search, int? limit, int? offset, String? cursor, String? cursorDirection, String? orderType}) async {
-        final String path = '/teams';
+        const String path = '/teams';
 
         final Map<String, dynamic> params = {
             'search': search,
@@ -38,7 +38,7 @@ class Teams extends Service {
      /// invite new members, add new owners and delete or update the team.
      ///
      Future<models.Team> create({required String teamId, required String name, List? roles}) async {
-        final String path = '/teams';
+        const String path = '/teams';
 
         final Map<String, dynamic> params = {
             'teamId': teamId,

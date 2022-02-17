@@ -11,7 +11,7 @@ class Database extends Service {
      /// modes](/docs/admin).
      ///
      Future<models.CollectionList> listCollections({String? search, int? limit, int? offset, String? cursor, String? cursorDirection, String? orderType}) async {
-        final String path = '/database/collections';
+        const String path = '/database/collections';
 
         final Map<String, dynamic> params = {
             'search': search,
@@ -35,7 +35,7 @@ class Database extends Service {
      /// Create a new Collection.
      ///
      Future<models.Collection> createCollection({required String collectionId, required String name, required String permission, required List read, required List write}) async {
-        final String path = '/database/collections';
+        const String path = '/database/collections';
 
         final Map<String, dynamic> params = {
             'collectionId': collectionId,
@@ -567,7 +567,7 @@ class Database extends Service {
 
      /// Get usage stats for the database
      Future<models.UsageDatabase> getUsage({String? range}) async {
-        final String path = '/database/usage';
+        const String path = '/database/usage';
 
         final Map<String, dynamic> params = {
             'range': range,
